@@ -5,7 +5,7 @@ public class Autoclicker : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public Button UpgradeButton;
-    public string Upgrade = "autoclicker";
+    public string Upgrade = "Autoclicker";
     [SerializeField] private upgrades Upgrade_manager;
     void Start()
     {
