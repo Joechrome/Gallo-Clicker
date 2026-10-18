@@ -6,10 +6,12 @@ public class clickable_behaviour : MonoBehaviour
     [SerializeField]
     private Boolean isTiming;
     private int timer;
-    public Boolean IsClicking = false;
-
-    public Boolean isclicked;
     private SoundEffect _clickSound;
+
+    public Boolean IsClicking = false;
+    public Boolean isclicked;
+    public ParticleController particleSpawner;
+
 
     void Start()
     {
@@ -27,10 +29,16 @@ public class clickable_behaviour : MonoBehaviour
                 isclicked = true;
 
                 Debug.Log("clicked");
+
+                // Bank the click straight away. The score used to be counted by
+                // Score_Noting polling the isclicked flag on the same frame, and
+                // if that script's Update ran first the click was lost entirely.
+                GameData.AddClick();
+                particleSpawner.Trigger();
                 isTiming = true;
                 timer = 0;
                 IsClicking = true;
-                transform.localScale = new Vector2(0.9f, 0.9f);
+                transform.localScale = new Vector2(0.8f, 0.8f);
 
                 if (_clickSound != null)
                 {
@@ -54,7 +62,7 @@ public class clickable_behaviour : MonoBehaviour
             isTiming = false;
 
             IsClicking = false;
-            transform.localScale = new Vector2(1f, 1f);
+            transform.localScale = new Vector2(0.9f, 0.9f);
         }
     }
 }

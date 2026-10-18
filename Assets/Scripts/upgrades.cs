@@ -8,14 +8,20 @@ using System.IO;
 
 public class Upgrade
 {
+    public string Name;
     public string Description;
     public int Cost;
     public bool Owned;
-    public Upgrade(string description,int cost)
+
+    public Upgrade(string name, string description, int cost)
     {
+        Name = name;
         Description = description;
         Cost = cost;
-        Owned = false;
+
+        // Restore the purchase from the save file, so an upgrade bought in an
+        // earlier session still counts as owned.
+        Owned = GameData.IsUpgradeOwned(name);
     }
     public int[] purchase(int coins)
     {
@@ -37,19 +43,30 @@ public class Upgrade
                 return result;
             }
         }
-        else
-        {
-            result[0] = 1;
-            result[1] = coins;
-            return result;
-        }
+
+        // Spend() checks the balance itself and changes nothing if the player is
+        // short, so the score and the Owned flag can never disagree.
+//        if (!GameData.Spend(Cost))
+//        {
+//            result[0] = 1;
+//            result[1] = coins;
+//            return result;
+//        }
+//
+//        Owned = true;
+//        GameData.MarkUpgradeOwned(Name);
+//        return true;
     }
 }
 
 
 public class upgrades : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public Upgrade Autoclicker;
+    public Upgrade DoubleClick;
+    public Upgrade TripleClick;
+    public Upgrade QuadrupleClick;
+
     void Start()
     {
         coins = 100000;
@@ -73,11 +90,12 @@ public class upgrades : MonoBehaviour
         {
             result = Autoclicker.purchase(coins);
         }
-        else if (upgrade == "DoubleClick")
+
+        if (target.TryPurchase())
         {
             result = DoubleClick.purchase(coins);
         }
-        else if (upgrade == "TripleClick")
+        else
         {
             result = TripleClick.purchase(coins);
         }
@@ -98,7 +116,6 @@ public class upgrades : MonoBehaviour
             NotEnoughMoney.SetActive(true);
         }
         coins = result[1];
-        float time = Time.deltaTime;
         UnityEngine.Debug.Log('b');
         StartCoroutine(Wait(1000f));
         AlreadyPurchased.SetActive(false);
@@ -113,6 +130,10 @@ public class upgrades : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+//        if (upgrade == _autoclicker.Name) return _autoclicker;
+//        if (upgrade == _doubleClick.Name) return _doubleClick;
+//        if (upgrade == _tripleClick.Name) return _tripleClick;
+//        if (upgrade == _quadrupleClick.Name) return _quadrupleClick;
+//        return null;
     }
 }
