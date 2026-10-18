@@ -1,5 +1,5 @@
-using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine;
 
 public class Autoclicker : MonoBehaviour
 {
@@ -9,39 +9,12 @@ public class Autoclicker : MonoBehaviour
     [SerializeField] private upgrades Upgrade_manager;
     void Start()
     {
-
-        if (_upgradeButton == null)
-        {
-            _upgradeButton = GetComponent<Button>();
-        }
-
-        if (_upgradeManager == null)
-        {
-            _upgradeManager = FindFirstObjectByType<upgrades>();
-        }
-
-        if (_upgradeButton == null)
-        {
-            Debug.LogError(
-                $"{name}: no Button on this object and none assigned in the Inspector.",
-                this);
-            return;
-        }
-
-        if (_upgradeManager == null)
-        {
-            Debug.LogError(
-                $"{name}: no upgrades component found in this scene. Add one, or " +
-                "assign it in the Inspector.",
-                this);
-            return;
-        }
-
-        _upgradeButton.onClick.AddListener(OnButtonPressed);
+        UpgradeButton.onClick.AddListener(TaskOnClick);
     }
-
-    private void OnButtonPressed()
+    // Update is called once per frame
+    void TaskOnClick()
     {
-        _upgradeManager.upgrade_button_press(_upgradeName);
+        Upgrade_manager.upgrade_button_press(Upgrade);
+        UnityEngine.Debug.Log("pressed");
     }
 }

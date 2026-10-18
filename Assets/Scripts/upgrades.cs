@@ -9,14 +9,12 @@ using System.IO;
 public class Upgrade
 {
     public string Name;
-    public string Description;
     public int Cost;
     public bool Owned;
 
-    public Upgrade(string name, string description, int cost)
+    public Upgrade(string name, int cost)
     {
         Name = name;
-        Description = description;
         Cost = cost;
 
         // Restore the purchase from the save file, so an upgrade bought in an
@@ -43,6 +41,12 @@ public class Upgrade
                 return result;
             }
         }
+        else
+        {
+            result[0] = 1;
+            result[1] = coins;
+            return result;
+        }
 
         // Spend() checks the balance itself and changes nothing if the player is
         // short, so the score and the Owned flag can never disagree.
@@ -62,10 +66,6 @@ public class Upgrade
 
 public class upgrades : MonoBehaviour
 {
-    public Upgrade Autoclicker;
-    public Upgrade DoubleClick;
-    public Upgrade TripleClick;
-    public Upgrade QuadrupleClick;
 
     void Start()
     {
@@ -90,12 +90,11 @@ public class upgrades : MonoBehaviour
         {
             result = Autoclicker.purchase(coins);
         }
-
-        if (target.TryPurchase())
+        else if (upgrade == "DoubleClick")
         {
             result = DoubleClick.purchase(coins);
         }
-        else
+        else if (upgrade == "TripleClick")
         {
             result = TripleClick.purchase(coins);
         }
@@ -117,15 +116,16 @@ public class upgrades : MonoBehaviour
         }
         coins = result[1];
         UnityEngine.Debug.Log('b');
-        StartCoroutine(Wait(1000f));
-        AlreadyPurchased.SetActive(false);
-        SuccessfullyPurchased.SetActive(false);
-        NotEnoughMoney.SetActive(false);
+        StartCoroutine(Wait(2.5f));
+        UnityEngine.Debug.Log('c');
         UnityEngine.Debug.Log(coins);
     }
     IEnumerator Wait(float delay)
     {
         yield return new WaitForSeconds(delay);
+        AlreadyPurchased.SetActive(false);
+        SuccessfullyPurchased.SetActive(false);
+        NotEnoughMoney.SetActive(false);
     }
     // Update is called once per frame
     void Update()
