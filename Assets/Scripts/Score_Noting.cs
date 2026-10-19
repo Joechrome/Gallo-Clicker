@@ -6,4 +6,8 @@ public class Score_Noting : MonoBehaviour
     {
         return GameData.Clicks;
     }
+    void Update()
+    {
+        GameData.autoclicker();
+    }
 }

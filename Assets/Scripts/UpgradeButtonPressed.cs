@@ -15,6 +15,5 @@ public class Autoclicker : MonoBehaviour
     void TaskOnClick()
     {
         Upgrade_manager.upgrade_button_press(Upgrade);
-        UnityEngine.Debug.Log("pressed");
     }
 }
