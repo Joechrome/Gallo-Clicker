@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 
 
 public static class GameData
@@ -31,7 +32,29 @@ public static class GameData
 
     public static void AddClick()
     {
-        Clicks = Clicks + 1;
+        if (OwnedUpgrades.Contains("QuadrupleClick"))
+        {
+            Clicks = Clicks + 4;
+        }
+        else if (OwnedUpgrades.Contains("TripleClick"))
+        {
+            Clicks = Clicks + 3;
+        }
+        else if (OwnedUpgrades.Contains("DoubleClick"))
+        {
+            Clicks = Clicks + 2;
+        }
+        else
+        {
+           Clicks = Clicks + 1;
+        }
+    }
+    public static void autoclicker()
+    {
+        if (OwnedUpgrades.Contains("Autoclicker"))
+        {
+            Clicks = Clicks + 1;
+        }
     }
 
     public static bool CanAfford(int cost)
@@ -43,6 +66,7 @@ public static class GameData
     {
         if (!CanAfford(cost))
         {
+            UnityEngine.Debug.Log('a');
             return false;
         }
 
