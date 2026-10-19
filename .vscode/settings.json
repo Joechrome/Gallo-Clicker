@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Clicker.slnx"
+    "dotnet.defaultSolution": "Clicking-Game.slnx"
 }
