@@ -405,6 +405,7 @@ GameObject:
   - component: {fileID: 463833063}
   - component: {fileID: 463833062}
   - component: {fileID: 463833061}
+  - component: {fileID: 463833064}
   m_Layer: 5
   m_Name: Claude
   m_TagString: Untagged
@@ -514,6 +515,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 463833059}
   m_CullTransparentMesh: 1
+--- !u!114 &463833064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 463833059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e38222dd418d49c4a9d8edd86c20dbc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Autoclicker
+  UpgradeButton: {fileID: 463833061}
+  Upgrade: QuadrupleClick
+  Upgrade_manager: {fileID: 814587357}
 --- !u!1 &802823336
 GameObject:
   m_ObjectHideFlags: 0
@@ -680,6 +696,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1c42916ba0041849917d5e320cc7d32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::upgrades
+  current_score: {fileID: 0}
+  Scoreboard: {fileID: 0}
   AlreadyPurchased: {fileID: 403648810}
   SuccessfullyPurchased: {fileID: 1177329970}
   NotEnoughMoney: {fileID: 1908353684}
@@ -1822,6 +1840,7 @@ GameObject:
   - component: {fileID: 1738322491}
   - component: {fileID: 1738322490}
   - component: {fileID: 1738322489}
+  - component: {fileID: 1738322492}
   m_Layer: 5
   m_Name: Copilot
   m_TagString: Untagged
@@ -1931,6 +1950,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1738322487}
   m_CullTransparentMesh: 1
+--- !u!114 &1738322492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1738322487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e38222dd418d49c4a9d8edd86c20dbc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Autoclicker
+  UpgradeButton: {fileID: 1738322489}
+  Upgrade: TripleClick
+  Upgrade_manager: {fileID: 814587357}
 --- !u!1 &1765658692
 GameObject:
   m_ObjectHideFlags: 0
