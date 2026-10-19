@@ -19,6 +19,7 @@ public class ParticleController : MonoBehaviour
 
     public void Trigger()
     {
+        Wisdom = 4;
         
         if (GameData.IsUpgradeOwned("Autoclicker"))
         {
