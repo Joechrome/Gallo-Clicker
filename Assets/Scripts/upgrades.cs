@@ -111,14 +111,20 @@ public class upgrades : MonoBehaviour
         if (result[0] == 1)
         {
             AlreadyPurchased.SetActive(true);
+            SuccessfullyPurchased.SetActive(false);
+            NotEnoughMoney.SetActive(false);
         } 
         else if (result[0] == 2)
         {
+            AlreadyPurchased.SetActive(false);
             SuccessfullyPurchased.SetActive(true);
+            NotEnoughMoney.SetActive(false);
         } 
         else if (result[0] == 3)
         {
-            NotEnoughMoney.SetActive(true);
+            AlreadyPurchased.SetActive(false);
+            SuccessfullyPurchased.SetActive(true);
+            NotEnoughMoney.SetActive(false);
         }
         coins = result[1];
         StartCoroutine(Wait(2.5f));
