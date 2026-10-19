@@ -28,6 +28,7 @@ public class Upgrade
         {
             if (coins >= Cost) 
             {   
+                GameData.MarkUpgradeOwned(Name);
                 Owned = true;
                 coins -= Cost;
                 result[0] = 2;
@@ -66,21 +67,26 @@ public class Upgrade
 
 public class upgrades : MonoBehaviour
 {
-
+    public Score_Noting current_score;
     void Start()
     {
-        coins = 100000;
+        if (Scoreboard != null)
+        {
+            current_score = Scoreboard.GetComponent<Score_Noting>();
+        }
+        coins = current_score != null ? current_score.getscore() : GameData.Clicks;
         UnityEngine.Debug.Log(coins);
         AlreadyPurchased.SetActive(false);
         SuccessfullyPurchased.SetActive(false);
         NotEnoughMoney.SetActive(false);
     }
+    public GameObject Scoreboard;
     int coins;
     [SerializeField] public GameObject AlreadyPurchased;
     [SerializeField] public GameObject SuccessfullyPurchased;
     [SerializeField] public GameObject NotEnoughMoney;
-    Upgrade Autoclicker = new Upgrade("automatically clicks for you",10000);
-    Upgrade DoubleClick = new Upgrade("each click gives 2 coins", 100);
+    Upgrade Autoclicker = new Upgrade("automatically clicks for you",10);
+    Upgrade DoubleClick = new Upgrade("each click gives 2 coins", 10);
     Upgrade TripleClick = new Upgrade("each click gives 3 coins", 200);
     Upgrade QuadrupleClick = new Upgrade("each click gives 4 coins", 300);
     public void upgrade_button_press(string upgrade)
@@ -115,9 +121,7 @@ public class upgrades : MonoBehaviour
             NotEnoughMoney.SetActive(true);
         }
         coins = result[1];
-        UnityEngine.Debug.Log('b');
         StartCoroutine(Wait(2.5f));
-        UnityEngine.Debug.Log('c');
         UnityEngine.Debug.Log(coins);
     }
     IEnumerator Wait(float delay)
