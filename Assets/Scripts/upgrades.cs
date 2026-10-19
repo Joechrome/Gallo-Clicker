@@ -28,8 +28,10 @@ public class Upgrade
         {
             if (coins >= Cost) 
             {   
+                GameData.MarkUpgradeOwned(Name);
                 Owned = true;
                 coins -= Cost;
+                GameData.Spend(Cost);
                 result[0] = 2;
                 result[1] = coins;
                 return result;
@@ -66,23 +68,27 @@ public class Upgrade
 
 public class upgrades : MonoBehaviour
 {
-
+    public Score_Noting current_score;
     void Start()
     {
-        coins = 100000;
-        UnityEngine.Debug.Log(coins);
+        if (Scoreboard != null)
+        {
+            current_score = Scoreboard.GetComponent<Score_Noting>();
+        }
+        coins = current_score != null ? current_score.getscore() : GameData.Clicks;
         AlreadyPurchased.SetActive(false);
         SuccessfullyPurchased.SetActive(false);
         NotEnoughMoney.SetActive(false);
     }
+    public GameObject Scoreboard;
     int coins;
     [SerializeField] public GameObject AlreadyPurchased;
     [SerializeField] public GameObject SuccessfullyPurchased;
     [SerializeField] public GameObject NotEnoughMoney;
-    Upgrade Autoclicker = new Upgrade("automatically clicks for you",10000);
-    Upgrade DoubleClick = new Upgrade("each click gives 2 coins", 100);
-    Upgrade TripleClick = new Upgrade("each click gives 3 coins", 200);
-    Upgrade QuadrupleClick = new Upgrade("each click gives 4 coins", 300);
+    Upgrade Autoclicker = new Upgrade("Autoclicker",1000);
+    Upgrade DoubleClick = new Upgrade("DoubleClick", 50);
+    Upgrade TripleClick = new Upgrade("TripleClick", 100);
+    Upgrade QuadrupleClick = new Upgrade("QuadrupleClick", 150);
     public void upgrade_button_press(string upgrade)
     {
         int[] result = {0,0};
@@ -105,20 +111,23 @@ public class upgrades : MonoBehaviour
         if (result[0] == 1)
         {
             AlreadyPurchased.SetActive(true);
+            SuccessfullyPurchased.SetActive(false);
+            NotEnoughMoney.SetActive(false);
         } 
         else if (result[0] == 2)
         {
+            AlreadyPurchased.SetActive(false);
             SuccessfullyPurchased.SetActive(true);
+            NotEnoughMoney.SetActive(false);
         } 
         else if (result[0] == 3)
         {
-            NotEnoughMoney.SetActive(true);
+            AlreadyPurchased.SetActive(false);
+            SuccessfullyPurchased.SetActive(true);
+            NotEnoughMoney.SetActive(false);
         }
         coins = result[1];
-        UnityEngine.Debug.Log('b');
         StartCoroutine(Wait(2.5f));
-        UnityEngine.Debug.Log('c');
-        UnityEngine.Debug.Log(coins);
     }
     IEnumerator Wait(float delay)
     {
