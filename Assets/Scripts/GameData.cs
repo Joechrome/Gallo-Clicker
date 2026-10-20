@@ -49,11 +49,20 @@ public static class GameData
            Clicks = Clicks + 1;
         }
     }
+    public static int Cooldown = 10;
     public static void autoclicker()
     {
         if (OwnedUpgrades.Contains("Autoclicker"))
         {
-            Clicks = Clicks + 1;
+            if (Cooldown == 0)
+            {
+                Clicks = Clicks + 1;
+                Cooldown = 10;
+            }
+            else
+            {
+                Cooldown -= 1;
+            }
         }
     }
 

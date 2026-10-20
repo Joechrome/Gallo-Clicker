@@ -89,6 +89,9 @@ public class upgrades : MonoBehaviour
     Upgrade DoubleClick = new Upgrade("DoubleClick", 50);
     Upgrade TripleClick = new Upgrade("TripleClick", 100);
     Upgrade QuadrupleClick = new Upgrade("QuadrupleClick", 150);
+    Upgrade Sombrero = new Upgrade("Sombrero",500);
+    Upgrade SailorHat = new Upgrade("SailorHat",500);
+    Upgrade Goku = new Upgrade("Goku",500);
     public void upgrade_button_press(string upgrade)
     {
         int[] result = {0,0};
@@ -108,6 +111,18 @@ public class upgrades : MonoBehaviour
         {
             result = QuadrupleClick.purchase(coins);
         }
+        else if (upgrade == "Sombrero")
+        {
+            result = Sombrero.purchase(coins);
+        }
+        else if (upgrade == "SailorHat")
+        {
+            result = SailorHat.purchase(coins);
+        }
+        else if (upgrade == "Goku")
+        {
+            result = Goku.purchase(coins);
+        }
         if (result[0] == 1)
         {
             AlreadyPurchased.SetActive(true);
@@ -123,8 +138,8 @@ public class upgrades : MonoBehaviour
         else if (result[0] == 3)
         {
             AlreadyPurchased.SetActive(false);
-            SuccessfullyPurchased.SetActive(true);
-            NotEnoughMoney.SetActive(false);
+            SuccessfullyPurchased.SetActive(false);
+            NotEnoughMoney.SetActive(true);
         }
         coins = result[1];
         StartCoroutine(Wait(2.5f));
