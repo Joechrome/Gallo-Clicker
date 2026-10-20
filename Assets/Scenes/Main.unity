@@ -297,9 +297,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Particles
   particlePrefab: {fileID: 0}
   spawnPoint: {fileID: 0}
-  image: {fileID: 0}
   size: 0
-  particleAmount: 15
+  Wisdom: 4
   lifetime: 3
 --- !u!4 &373817671
 Transform:
@@ -1622,11 +1621,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae44aa6b7dd6c43ac9c22f1392d93de4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParticleController
-  particlePrefab: {fileID: 1122885808163243696, guid: 03e737e126e3d471abf7c7afd6dd6191, type: 3}
+  particlePrefab: {fileID: 8111796467690792320, guid: 58dc576246aeb2e4bb288209a2c3b335, type: 3}
   spawnPoint: {fileID: 2019232331}
-  image: {fileID: -2609736637123623148, guid: b614d3fe7b2544181bc73e6e8f04f971, type: 3}
   size: 0.03
-  particleAmount: 5
+  Wisdom: 4
   lifetime: 3
 --- !u!1 &2128868529
 GameObject:
