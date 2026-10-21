@@ -18,11 +18,15 @@ public class clickable_behaviour : MonoBehaviour
 
     string[] skins = new string[] { "Skin1", "Skin2", "Skin3", "Skin4" }; 
 
+    private Camera _camera;
+    private Collider2D _selfCollider;
 
     void Start()
     {
         _clickSound = GetComponent<SoundEffect>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        _camera = Camera.main;
+        _selfCollider = GetComponent<Collider2D>();
     }
 
     void Update()
@@ -54,12 +58,30 @@ public class clickable_behaviour : MonoBehaviour
                     _clickSound.Play();
                 }
             }
-        }
-        else if (Keyboard.current.anyKey.wasPressedThisFrame)
+        // Any key counts as a click too (see the keyboard hook), so both inputs are
+        // treated the same way here. Neither may earn score while a ransom is running.
+        bool wantsToClick = false;
+        if (!GameData.ScoreBlocked)
         {
-            Debug.Log("clicked");
+            bool mouseClick = Input.GetMouseButtonDown(0) && PointerIsOverThisObject();
+            bool keyPress = Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame;
+            wantsToClick = mouseClick || keyPress;
+        }
+
+        if (wantsToClick)
+        {
+            isclicked = true;
+
+            // Bank the click straight away. The score used to be counted by
+            // Score_Noting polling the isclicked flag on the same frame, and
+            // if that script's Update ran first the click was lost entirely.
             GameData.AddClick();
-            particleSpawner.Trigger();
+
+            if (particleSpawner != null)
+            {
+                particleSpawner.Trigger();
+            }
+
             isTiming = true;
             timer = 0;
             IsClicking = true;
@@ -70,13 +92,9 @@ public class clickable_behaviour : MonoBehaviour
                 _clickSound.Play();
             }
         }
-        
-
-                
-        else{
-
+        else
+        {
             isclicked = false;
-
         }
 
         if (isTiming)
@@ -91,5 +109,29 @@ public class clickable_behaviour : MonoBehaviour
             IsClicking = false;
             transform.localScale = new Vector2(0.9f, 0.9f);
         }
+    }
+
+    /// <summary>
+    /// True only when the pointer sits on this object's own collider.
+    ///
+    /// This used to accept any collider under the cursor, which was fine while the
+    /// Galo was the only collider in the scene. Now the glitched cloud and the
+    /// ransom coins exist too, so an unmatched hit would quietly score for them.
+    /// </summary>
+    private bool PointerIsOverThisObject()
+    {
+        if (_camera == null)
+        {
+            _camera = Camera.main;
+        }
+
+        if (_camera == null || _selfCollider == null)
+        {
+            return false;
+        }
+
+        Vector2 pointer = _camera.ScreenToWorldPoint(Input.mousePosition);
+        Collider2D hit = Physics2D.OverlapPoint(pointer);
+        return hit != null && hit == _selfCollider;
     }
 }

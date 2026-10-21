@@ -49,8 +49,19 @@ public static class GameData
     }
 
 
+    /// <summary>
+    /// Set while a ransom sequence is running: no click and no key press may earn
+    /// score during the warning window or the coin collection. Owned by RansomEvent.
+    /// </summary>
+    public static bool ScoreBlocked { get; set; }
+
     public static void AddClick()
     {
+        if (ScoreBlocked)
+        {
+            return;
+        }
+
         if (OwnedUpgrades.Contains("QuadrupleClick"))
         {
             Clicks = Clicks + 4;
@@ -71,6 +82,11 @@ public static class GameData
     public static int Cooldown = 10;
     public static void autoclicker()
     {
+        if (ScoreBlocked)
+        {
+            return;
+        }
+
         if (OwnedUpgrades.Contains("Autoclicker"))
         {
             if (Cooldown == 0)
@@ -116,5 +132,7 @@ public static class GameData
     {
         Clicks = 0;
         OwnedUpgrades.Clear();
+        Cooldown = 10;
+        ScoreBlocked = false;
     }
 }
