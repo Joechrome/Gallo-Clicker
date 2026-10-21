@@ -5,6 +5,25 @@ using UnityEngine.Diagnostics;
 
 public static class GameData
 {
+    private static int _skinNumber;
+
+    public static void ChangeSkin()
+    {
+        _skinNumber += 1;
+        if (_skinNumber >= 4)
+        {
+            _skinNumber = 0;
+        }
+    }
+    public static int GetSkin()
+    {
+        return _skinNumber;
+    }
+    public static void ResetSkin()
+    {
+        _skinNumber = 0;
+    }
+
     private static int _clicks;
 
 

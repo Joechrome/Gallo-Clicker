@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 public class clickable_behaviour : MonoBehaviour
 {
@@ -8,19 +9,27 @@ public class clickable_behaviour : MonoBehaviour
     private Boolean isTiming;
     private int timer;
     private SoundEffect _clickSound;
+    private SpriteRenderer spriteRenderer; 
 
     public Boolean IsClicking = false;
     public Boolean isclicked;
     public ParticleController particleSpawner;
+    
+
+    string[] skins = new string[] { "Skin1", "Skin2", "Skin3", "Skin4" }; 
 
 
     void Start()
     {
         _clickSound = GetComponent<SoundEffect>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
+
+        spriteRenderer.sprite = Resources.Load<Sprite>(skins[GameData.GetSkin()]);
+
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -28,7 +37,6 @@ public class clickable_behaviour : MonoBehaviour
             if (clicked.collider != null)
             {
                 isclicked = true;
-
                 Debug.Log("clicked");
 
                 // Bank the click straight away. The score used to be counted by
