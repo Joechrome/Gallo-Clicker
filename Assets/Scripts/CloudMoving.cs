@@ -2,6 +2,12 @@ using UnityEngine;
 
 public class CloudMoving : MonoBehaviour
 {
+    /// <summary>
+    /// Raised each time the cloud reaches the right edge and is teleported back to
+    /// the left one. GlitchCloud listens for this to roll for a glitched pass.
+    /// </summary>
+    public event System.Action Wrapped;
+
     [SerializeField] private float _speed = 5f; // Cloud Seed
     private const float OffscreenMargin = 1f;   // Travel pass the screen
     private const float MinRandomY = 2f;        // Min restriction
@@ -33,6 +39,8 @@ public class CloudMoving : MonoBehaviour
             position.x = _leftEdge;
             position.y = Random.Range(MinRandomY, MaxRandomY);
             transform.position = position;
+
+            Wrapped?.Invoke();
         }
     }
 }

@@ -463,6 +463,7 @@ GameObject:
   - component: {fileID: 540352753}
   - component: {fileID: 540352754}
   - component: {fileID: 540352755}
+  - component: {fileID: 930000011}
   m_Layer: 0
   m_Name: cloud
   m_TagString: Untagged
@@ -479,7 +480,7 @@ Transform:
   m_GameObject: {fileID: 540352752}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.78, y: 5, z: 0}
+  m_LocalPosition: {x: 4.69, y: 5, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -556,7 +557,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6e7242a95d98504f8a2049ae8d527fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CloudMoving
-  _speed: 1
+  _speed: 3
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -727,7 +728,7 @@ Transform:
   m_GameObject: {fileID: 714642321}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.08, y: 4.2, z: 0}
+  m_LocalPosition: {x: -5.28, y: 4.2, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -746,6 +747,72 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CloudMoving
   _speed: 2
+--- !u!114 &930000011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 540352752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 133e56d0f5b74859a95347d72b3a9db0, type: 3}
+  m_Name: GlitchCloud
+  m_EditorClassIdentifier: Assembly-CSharp::GlitchCloud
+  _ransom: {fileID: 930000014}
+  _stopSignSize: 0.62
+--- !u!1 &930000012
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 930000013}
+  - component: {fileID: 930000014}
+  m_Layer: 0
+  m_Name: Event
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &930000013
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 930000012}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &930000014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 930000012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d013c937cdd34a81b2d24257aec28ea0, type: 3}
+  m_Name: RansomEvent
+  m_EditorClassIdentifier: Assembly-CSharp::RansomEvent
+  _glitchChancePercent: 5
+  _clickBlockDuration: 1
+  _coinsToCollect: 8
+  _collectTimeLimit: 10
+  _sky: {fileID: 1208367631}
+  _ground: {fileID: 1413069873}
+  _sfxVolume: 0.8
+  _musicVolume: 0.4
 --- !u!1 &1208367630
 GameObject:
   m_ObjectHideFlags: 0
@@ -1775,3 +1842,4 @@ SceneRoots:
   - {fileID: 1778472986}
   - {fileID: 1864545621}
   - {fileID: 373817671}
+  - {fileID: 930000013}
