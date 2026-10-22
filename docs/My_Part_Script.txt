@@ -1,0 +1,288 @@
+================================================================
+CLICKER — CLASSES PROJECT
+PRESENTATION SCRIPT — [YOUR NAME]
+================================================================
+
+Criteria covered: A2.2, A2.3, B1, B2
+Run time as written: about 5 minutes
+If your slot is shorter, see "IF YOU ONLY HAVE 2 MINUTES" at the end.
+
+HOW TO USE THIS
+- Read the plain paragraphs out loud. They are written how you speak.
+- Anything in [SQUARE BRACKETS] is a cue for YOU. Do not read it out.
+- Pause after each "why it could have been done differently". That is the
+  bit that earns the higher level — do not rush it.
+
+SLIDES YOU NEED (4 only)
+1. Title: "Clicker — Classes", your name, the four criteria.
+2. A screenshot of GameData.cs with the Clicks property visible.
+3. A screenshot of clickable_behaviour.cs with PointerIsOverThisObject
+   visible.
+4. The repository Commits page (live browser tab, not a screenshot).
+
+----------------------------------------------------------------
+0:00 — 0:30   WHAT WE BUILT AND WHAT I OWNED
+----------------------------------------------------------------
+
+Ours is a clicker game. You click a character, you earn points, you spend
+them in a shop, and the shop changes how the game plays.
+
+My part was the spine of it. I made the initial project, both scenes, the
+click handler, the score, and the code that keeps the score alive when you
+move between scenes. Everything else in the game hangs off that.
+
+I want to show you three things: how one class decides who is allowed to
+change the score, how I fixed a bug that was deleting the player's
+progress, and how I managed my own work across the project.
+
+----------------------------------------------------------------
+0:30 — 2:00   A2.2 — ENCAPSULATION, IN ONE CLASS
+----------------------------------------------------------------
+
+[SLIDE 2 — GameData.cs]
+
+This is GameData. It is where the score lives.
+
+The line to look at is this property.
+
+    public static int Clicks { get; private set; }
+
+Anyone can READ the score. Only GameData can WRITE it.
+
+That is the whole idea of encapsulation, and I want to be precise about
+why it matters here rather than just calling it that. If the setter were
+public, any script in the project could write
+
+    GameData.Clicks = 999999;
+
+and it would work. No error. But the scoreboard, the shop's affordability
+check, and the ransom sequence would all disagree about what the player
+has, and I would have no way of knowing which script did it. A bug like
+that can take a whole evening to find.
+
+By making the setter private, there is exactly ONE way to change the
+score, and it is a method I control.
+
+[PAUSE]
+
+The second half is that the methods enforce the rules, not the callers.
+Look at Spend.
+
+    public static bool Spend(int cost)
+
+It checks the balance itself, and if the player is short it returns false
+and changes NOTHING. So a caller cannot accidentally make the score
+negative, and cannot half-complete a purchase by taking the money and
+then failing to give the upgrade.
+
+The test I use for whether a class is actually doing its job is: what
+would break if it was not written this way? Without the private setter,
+one careless line anywhere corrupts the score. Without Spend, every
+single caller has to remember to check the balance first — and every
+caller that forgets is a bug waiting to happen. I wrote the rule once,
+inside the class, so no caller can forget it.
+
+Why static, though? Because the score belongs to no scene. Static
+members belong to the class, and a class is never unloaded when a scene
+is unloaded. That is the next part, and it started as a bug.
+
+----------------------------------------------------------------
+2:00 — 3:10   A2.3 — FIXING A BUG BY MOVING STATE
+----------------------------------------------------------------
+
+Originally the score was an ordinary int sitting inside a component on an
+object in the Main scene.
+
+The bug was this: you click, you build up a score, you walk into the
+shop — and your score is gone. Not reset. Deleted. Because loading a
+scene destroys every object in the old one, and the score was inside one
+of those objects.
+
+The fix was to move the score into GameData and make it static. That is
+a change to existing code that made the whole programme able to do
+something it could not do before, which is exactly what modifying
+modular code to enhance functionality means: I did not rewrite the game,
+I moved one value to the right class.
+
+And it paid for itself immediately. Once the score lived outside the
+scenes, three things got easy that would otherwise each have been a
+problem:
+
+- the shop can display the score, because it reads the same value
+- purchases come out of the same score, so the economy cannot drift
+- the ransom sequence can wipe the score, because there is one place to
+  wipe
+
+One value, in the right class, unlocked three features.
+
+[PAUSE]
+
+The second modification was in my click handler.
+
+[SLIDE 3 — clickable_behaviour.cs]
+
+It used to fire a ray and score if the ray hit ANY collider. That was
+correct when the clickable character was the only collider in the scene.
+Then we added a glitched cloud with its own collider, and collectable
+coins. Those would have silently scored points for the player — no
+error, just wrong numbers going up.
+
+I did not rewrite the handler. I changed one condition. It now checks
+whether the thing under the cursor is its OWN collider:
+
+    return hit != null && hit == _selfCollider;
+
+One comparison, and the component is now safe in a scene it was never
+designed for.
+
+----------------------------------------------------------------
+3:10 — 3:50   A2.2 — REUSABLE PIECES
+----------------------------------------------------------------
+
+Two small examples of code built to be reused rather than rewired.
+
+The sound. I wrote one SoundEffect class with a single Play method. Any
+object that makes a noise gets the same component — the character click,
+the shop buttons, the particles. The alternative was putting audio code
+inside each of those scripts, which would mean the same setup, the same
+null check and the same volume field copied four times.
+
+And the score display is split in two, on purpose. Score_Noting is the
+thing you ask for the score. display_score is the thing that draws it on
+screen. The drawing code does not know where the number comes from, so
+the same display class works in the main scene and in the shop without a
+single line changed.
+
+----------------------------------------------------------------
+3:50 — 4:30   B1 / B2 — HOW I MANAGED AND WHAT I CONTRIBUTED
+----------------------------------------------------------------
+
+[SLIDE 4 — live Commits page]
+
+For project management I only want to give you numbers you can check.
+
+The project is thirty-nine commits, three contributors, seven merges,
+over the seventh to the twentieth of October. Eleven of those commits
+are mine, and the repository history is the record of who did what — it
+is verifiable, not something I am claiming.
+
+On my side the work fell into three phases. First the project and the
+two scenes, including registering both scenes in the build settings so
+they can actually be loaded — that sounds trivial until you discover a
+scene that exists on disk but cannot be loaded because it was never added
+to the build list. Then the core: clicking, scoring, and getting the
+score to survive a scene change. Then the shop, wiring the buttons and
+bringing the score into that scene too.
+
+The thing that went wrong is worth mentioning because it taught me the
+most. A merge overwrote a feature I had working. In Unity this is
+partly a language problem: scene files are text full of internal IDs, and
+two people editing the same scene produces a conflict you cannot sensibly
+resolve by hand.
+
+What fixed it was discipline, not a tool: commit small, commit as soon as
+something works, and push the same day. And when renaming a script,
+rename the file AND its .meta together — Unity stores every asset
+reference as an ID inside that .meta file, so delete-and-recreate
+silently breaks every scene reference to it.
+
+What I did not do well: I had no written task list and no scheduled
+checkpoints. I checked in when something broke instead of on a calendar.
+That is the first thing I would change.
+
+----------------------------------------------------------------
+4:30 — 5:00   FEEDBACK / WHAT I WOULD DO DIFFERENTLY
+----------------------------------------------------------------
+
+Three honest ones.
+
+One: we compared two names as text, "autoclicker" against "Autoclicker",
+and C# is case sensitive. The purchase clicked, logged that it was
+pressed, and did nothing at all. No error, no crash, just silence. That
+taught me that a silent failure is far worse than a loud one, and now
+anything that fails to match logs a warning.
+
+Two: our project has domain reload disabled in the editor. That is a
+Unity setting for faster iteration, but it means static state is not
+cleared between play sessions — so a score that was supposed to reset
+was still sitting there from the last run, and it looked exactly like a
+bug in my own code. I could not have found that by reading the code. I
+had to learn how the engine actually behaves.
+
+Three: our biggest class is eight hundred lines. I would break it up.
+That is the refactor at the top of the list.
+
+Thank you — I will take questions.
+
+================================================================
+IF YOU ONLY HAVE 2 MINUTES
+================================================================
+
+Keep these four, in this order, and skip everything else:
+
+1. The problem: the score was inside a scene object, so changing scenes
+   deleted the player's progress.
+2. The fix: move it to a static class, so no scene can unload it.
+3. Encapsulation with a reason: the setter is private, so there is one
+   way to change the score; Spend returns false and changes nothing if
+   the player is short, so no caller can create an impossible state.
+4. What it unlocked: the shop could display the score, spend from it,
+   and the ransom could wipe it — one value, three features.
+
+================================================================
+LIKELY QUESTIONS ON YOUR PART
+================================================================
+
+"Isn't a static class just global state, which is bad?"
+
+    Yes, and that is the honest trade. Static is global mutable state, it
+    is hard to unit test, and you cannot swap it out. I took it because
+    the alternative — a singleton object that survives scene loads —
+    needs an object placed in the first scene, needs guarding against
+    duplicates if you ever start from the shop scene, and can be
+    destroyed by accident. My data belongs to no scene, so I put it
+    where it cannot be destroyed. If it grew past a handful of values I
+    would move to an injected service instead.
+
+"What does encapsulation actually mean?"
+
+    The class decides what other code is allowed to do to it, instead of
+    trusting every caller to behave. My setter is private and Spend
+    changes nothing when the player cannot afford something, so no
+    caller can create a state that should not exist.
+
+"Why not just make the score field public and be careful?"
+
+    Because "being careful" is not a design. It works until a fifth
+    script touches it, and then the bug appears somewhere unrelated to
+    where the mistake was made.
+
+"What did you personally write?"
+
+    Name the files: the project and both scenes, the click handler, the
+    score class and the score display, the cloud movement, and the shop
+    wiring. Then name one decision in each that was yours.
+
+"Show me the inheritance."
+
+    CAREFUL. This project uses composition and events, not class
+    hierarchies. The honest answer: "We deliberately used composition
+    and events instead of inheritance. Our classes have distinct jobs
+    rather than shared family trees, and an event let us extend
+    behaviour without editing the class it plugs into." Do not invent
+    an inheritance chain that is not there.
+
+================================================================
+BEFORE YOU PRESENT
+================================================================
+
+- Set the shop prices low for the demo (5 / 10 / 20 / 40) so something
+  can actually be bought on stage.
+- Look at the Console before you start. Two stray debug lines still
+  print a letter on every failed purchase — that looks careless on a
+  projector.
+- Show code zoomed in. A projector destroys small text.
+- Say the honest weaknesses yourself, before a marker finds them.
+  "Eight hundred lines" and "no written task list" get you credit.
+  Being caught out does not.
+================================================================
