@@ -60,6 +60,21 @@ public class clickable_behaviour : MonoBehaviour
                 }
             }
         }
+        else if (Keyboard.current.anyKey.wasPressedThisFrame)
+        {
+            Debug.Log("clicked keyboard");
+            GameData.AddClick();
+            particleSpawner.Trigger();
+            isTiming = true;
+            timer = 0;
+            IsClicking = true;
+            transform.localScale = new Vector2(0.8f, 0.8f);
+
+            if (_clickSound != null)
+            {
+                _clickSound.Play();
+            }
+        }
         // Any key counts as a click too (see the keyboard hook), so both inputs are
         // treated the same way here. Neither may earn score while a ransom is running.
         bool wantsToClick = false;
