@@ -722,7 +722,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Autoclicker
   UpgradeButton: {fileID: 508929662}
-  Upgrade: QuadrupleClick
+  Upgrade: SailorHat
   Upgrade_manager: {fileID: 814587357}
 --- !u!114 &508929662
 MonoBehaviour:
@@ -1137,7 +1137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Autoclicker
   UpgradeButton: {fileID: 804162674}
-  Upgrade: QuadrupleClick
+  Upgrade: Goku
   Upgrade_manager: {fileID: 814587357}
 --- !u!114 &804162674
 MonoBehaviour:
@@ -2992,7 +2992,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Autoclicker
   UpgradeButton: {fileID: 1815677433}
-  Upgrade: QuadrupleClick
+  Upgrade: Sombrero
   Upgrade_manager: {fileID: 814587357}
 --- !u!114 &1815677433
 MonoBehaviour:
