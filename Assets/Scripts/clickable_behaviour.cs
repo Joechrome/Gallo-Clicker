@@ -24,9 +24,10 @@ public class clickable_behaviour : MonoBehaviour
     void Start()
     {
         _clickSound = GetComponent<SoundEffect>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
         _camera = Camera.main;
         _selfCollider = GetComponent<Collider2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
     }
 
     void Update()
@@ -58,6 +59,7 @@ public class clickable_behaviour : MonoBehaviour
                     _clickSound.Play();
                 }
             }
+        }
         // Any key counts as a click too (see the keyboard hook), so both inputs are
         // treated the same way here. Neither may earn score while a ransom is running.
         bool wantsToClick = false;

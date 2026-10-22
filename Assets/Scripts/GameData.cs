@@ -5,24 +5,6 @@ using UnityEngine.Diagnostics;
 
 public static class GameData
 {
-    private static int _skinNumber;
-
-    public static void ChangeSkin()
-    {
-        _skinNumber += 1;
-        if (_skinNumber >= 4)
-        {
-            _skinNumber = 0;
-        }
-    }
-    public static int GetSkin()
-    {
-        return _skinNumber;
-    }
-    public static void ResetSkin()
-    {
-        _skinNumber = 0;
-    }
 
     private static int _clicks;
 
@@ -135,4 +117,42 @@ public static class GameData
         Cooldown = 10;
         ScoreBlocked = false;
     }
+
+
+    // For Skin Changer
+    private static int _skinNumber;
+    private static string[] skinList = new string[] { "Default", "Sombrero", "SailorHat", "Goku" }; 
+
+    public static void ChangeSkin()
+    {
+        _skinNumber += 1;
+        Debug.Log($"skin: {_skinNumber}");
+        Debug.Log(IsUpgradeOwned(skinList[1]));
+
+        while (true)
+        {
+            if (_skinNumber >= 4)
+            {
+                _skinNumber = 0;
+                break;
+            }
+            if (IsUpgradeOwned(skinList[_skinNumber]))
+            {
+                break;
+            }
+            _skinNumber += 1;
+            
+        } 
+        Debug.Log($"skin: {_skinNumber}");
+        
+    } 
+    public static int GetSkin()
+    {
+        return _skinNumber;
+    }
+    public static void ResetSkin()
+    {
+        _skinNumber = 0;
+    }
 }
+
