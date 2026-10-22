@@ -1568,7 +1568,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02f0d1583354f4f0285bbb7bd50ba85c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
-  CurrentSkin: {fileID: 0}
 --- !u!1 &1778472983
 GameObject:
   m_ObjectHideFlags: 0
@@ -1991,7 +1990,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02f0d1583354f4f0285bbb7bd50ba85c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
-  CurrentSkin: {fileID: 0}
 --- !u!1 &2128868529
 GameObject:
   m_ObjectHideFlags: 0

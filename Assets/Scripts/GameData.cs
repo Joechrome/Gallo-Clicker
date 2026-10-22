@@ -127,7 +127,7 @@ public static class GameData
     {
         _skinNumber += 1;
         Debug.Log($"skin: {_skinNumber}");
-        Debug.Log(IsUpgradeOwned(skinList[1]));
+        Debug.Log(GameData.IsUpgradeOwned("Sombrero"));
 
         while (true)
         {
@@ -136,7 +136,7 @@ public static class GameData
                 _skinNumber = 0;
                 break;
             }
-            if (IsUpgradeOwned(skinList[_skinNumber]))
+            if (GameData.IsUpgradeOwned(skinList[_skinNumber]))
             {
                 break;
             }
